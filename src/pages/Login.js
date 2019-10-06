@@ -1,9 +1,31 @@
-import React from 'react';
-import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
 
 import logo from '../../assets/logo.png';
+import api from '../services/api';
 
-export default function Login() {
+export default function Login({ navigation }) {
+    const [email, setEmail] = useState('');
+    const [techs, setTechs] = useState('');
+    
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(user => {
+            if (user) {
+                navigation.navigate('List');
+            }
+        });
+    }, []);
+
+    async function handleSubmit() {
+        const response = await api.post('/sessions', { email });
+        const { _id } = response.data;
+
+        await AsyncStorage.setItem('user', _id);
+        await AsyncStorage.setItem('techs', techs);
+
+        navigation.navigate('List');
+    }
+
     return (
         <View style={styles.container}>
             <Image source={logo}></Image>
@@ -17,6 +39,8 @@ export default function Login() {
                     keyboardType = 'email-address'
                     autoCapitalize = 'none'
                     autoCorrect = { false }
+                    value = { email }
+                    onChangeText = { setEmail }
                 />
 
                 <Text style={styles.label}>TECNOLOGIAS * <Text style={styles.span}>(separadas por vírgula)</Text> </Text>
@@ -26,9 +50,11 @@ export default function Login() {
                     placeholderTextColor = '#999'
                     autoCapitalize = 'words'
                     autoCorrect = { false }
+                    value = { techs }
+                    onChangeText = { setTechs }
                 />
 
-                <TouchableOpacity style={ styles.button }>
+                <TouchableOpacity onPress={handleSubmit} style={ styles.button }>
                     <Text style={ styles.buttonText }> Encontrar spots </Text>
                 </TouchableOpacity>
             </View>

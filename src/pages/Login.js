@@ -43,7 +43,7 @@ export default function Login({ navigation }) {
                     onChangeText = { setEmail }
                 />
 
-                <Text style={styles.label}>TECNOLOGIAS * <Text style={styles.span}>(separadas por vírgula)</Text> </Text>
+                <Text style={styles.label}>TECNOLOGIAS * <Text style={styles.span}>(separadas por vírgula)</Text></Text>
                 <TextInput
                     style = {styles.input}
                     placeholder = 'Ex.: Node.js, React, React Native'
@@ -55,7 +55,7 @@ export default function Login({ navigation }) {
                 />
 
                 <TouchableOpacity onPress={handleSubmit} style={ styles.button }>
-                    <Text style={ styles.buttonText }> Encontrar spots </Text>
+                    <Text style={ styles.buttonText }>Encontrar spots</Text>
                 </TouchableOpacity>
             </View>
         </View>
